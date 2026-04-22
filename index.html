@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chain Spa — A spa day for your bike</title>
+<style>
+  :root {
+    --ink: #1a2a47;         /* dark navy, matches logo */
+    --ink-2: #2a3d5c;
+    --muted: #6a7a88;
+    --cream: #faf5ea;
+    --cream-2: #f2ead7;
+    --mint: #b8d6ca;
+    --mint-deep: #5d9586;
+    --gold: #c89a5b;
+    --error: #a84b4b;
+    --line: rgba(26, 42, 71, 0.12);
+    --white: #ffffff;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3 {
+    font-family: Georgia, Cambria, "Times New Roman", serif;
+    font-weight: 400;
+    letter-spacing: -0.015em;
+    line-height: 1.12;
+    color: var(--ink);
+  }
+
+  p { color: var(--ink-2); }
+
+  .narrow { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+
+  /* ---------- HEADER ---------- */
+  header {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(250, 245, 234, 0.82);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 24px; max-width: 1100px; margin: 0 auto;
+  }
+  .brand {
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none; color: var(--ink);
+  }
+  /* SVG fallback sizing */
+  svg.brand-mark { width: 34px; height: 34px; color: var(--ink); }
+  /* Loaded image sizing — allows non-square aspect */
+  img.brand-mark {
+    width: auto; height: 34px; max-width: 50px;
+    object-fit: contain; display: inline-block;
+  }
+  .brand-name {
+    font-family: Georgia, serif;
+    font-size: 18px; letter-spacing: 0.12em; text-transform: uppercase;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .brand-name .spark { color: var(--gold); font-size: 11px; margin-left: 2px; }
+
+  .nav-cta {
+    display: inline-block; padding: 8px 18px;
+    background: var(--ink); color: var(--cream);
+    border-radius: 999px; text-decoration: none;
+    font-size: 14px; font-weight: 500;
+    transition: background 0.2s;
+  }
+  .nav-cta:hover { background: var(--ink-2); }
+
+  /* ---------- BUTTON ---------- */
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 16px 30px;
+    background: var(--ink); color: var(--cream);
+    border-radius: 999px; text-decoration: none;
+    font-size: 16px; font-weight: 500;
+    border: none; cursor: pointer;
+    transition: transform 0.15s, background 0.2s, opacity 0.2s;
+    font-family: inherit;
+  }
+  .btn:hover { background: var(--ink-2); transform: translateY(-1px); }
+  .btn:active { transform: translateY(0); }
+  .btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+  .btn .spk { color: var(--gold); display: inline-flex; }
+
+  .btn-ghost {
+    background: transparent; color: var(--ink);
+    border: 1.5px solid var(--line);
+  }
+  .btn-ghost:hover { background: transparent; border-color: var(--ink); }
+
+  /* ---------- HERO ---------- */
+  .hero {
+    padding: 70px 0 100px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  svg.hero-mark {
+    width: 140px; height: 140px; color: var(--ink);
+  }
+  img.hero-mark {
+    width: auto; height: auto;
+    max-width: 220px; max-height: 190px;
+    object-fit: contain;
+  }
+  .hero-logo-wrap {
+    display: block;
+    margin: 0 auto 32px;
+    animation: fadeInUp 0.8s ease-out;
+    min-height: 140px;
+  }
+  .hero h1 {
+    font-size: clamp(38px, 6vw, 58px);
+    margin-bottom: 20px;
+    animation: fadeInUp 0.8s ease-out 0.1s both;
+  }
+  .hero h1 em {
+    font-style: italic; color: var(--mint-deep);
+  }
+  .hero-sub {
+    font-size: clamp(17px, 2vw, 20px);
+    color: var(--ink-2);
+    max-width: 560px; margin: 0 auto 40px;
+    animation: fadeInUp 0.8s ease-out 0.2s both;
+  }
+  .hero-cta { animation: fadeInUp 0.8s ease-out 0.3s both; }
+
+  .hero-sparkles {
+    position: absolute; inset: 0; pointer-events: none;
+  }
+  .hero-sparkles svg {
+    position: absolute; color: var(--gold);
+    animation: twinkle 3.2s ease-in-out infinite;
+  }
+  .hero-sparkles svg:nth-child(1) { top: 18%; left: 12%; width: 18px; animation-delay: 0s; }
+  .hero-sparkles svg:nth-child(2) { top: 28%; right: 14%; width: 24px; animation-delay: 0.6s; }
+  .hero-sparkles svg:nth-child(3) { bottom: 32%; left: 22%; width: 14px; animation-delay: 1.2s; }
+  .hero-sparkles svg:nth-child(4) { top: 58%; right: 20%; width: 16px; animation-delay: 1.8s; }
+  .hero-sparkles svg:nth-child(5) { bottom: 18%; right: 34%; width: 12px; animation-delay: 2.4s; }
+
+  /* ---------- SECTIONS ---------- */
+  .section { padding: 90px 0; }
+  .section-header {
+    text-align: center; max-width: 720px; margin: 0 auto 60px; padding: 0 24px;
+  }
+  .eyebrow {
+    display: inline-block;
+    font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--mint-deep); font-weight: 600; margin-bottom: 16px;
+  }
+  .section h2 {
+    font-size: clamp(30px, 4.5vw, 46px);
+    margin-bottom: 16px;
+  }
+  .section-lead { font-size: 18px; color: var(--ink-2); }
+
+  /* Concept / features */
+  .features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 20px;
+    max-width: 1100px; margin: 0 auto; padding: 0 24px;
+  }
+  .feature {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 30px 26px;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  }
+  .feature:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 34px rgba(26, 42, 71, 0.08);
+    border-color: var(--mint);
+  }
+  .feature-num {
+    font-family: Georgia, serif;
+    font-size: 13px; color: var(--gold);
+    letter-spacing: 0.1em;
+    margin-bottom: 16px;
+  }
+  .feature-icon { width: 44px; height: 44px; margin-bottom: 18px; color: var(--mint-deep); }
+  .feature h3 { font-size: 20px; margin-bottom: 8px; }
+  .feature p { font-size: 14.5px; color: var(--muted); line-height: 1.55; }
+
+  /* Why */
+  .why {
+    background: var(--cream-2);
+    padding: 100px 0;
+    position: relative;
+  }
+  .why-content {
+    max-width: 820px; margin: 0 auto; padding: 0 24px; text-align: center;
+  }
+  .why h2 { font-size: clamp(30px, 4.5vw, 46px); margin-bottom: 24px; }
+  .why-text { font-size: 19px; line-height: 1.7; color: var(--ink-2); }
+  .why-quote {
+    font-family: Georgia, serif; font-style: italic;
+    font-size: 22px; color: var(--ink);
+    margin: 44px 0 0; padding: 34px 20px 0;
+    border-top: 1px solid var(--line);
+  }
+
+  /* ---------- SURVEY ---------- */
+  .survey-section { padding: 100px 0; background: var(--cream); }
+  .survey-intro { text-align: center; max-width: 720px; margin: 0 auto 50px; padding: 0 24px; }
+  .survey { max-width: 680px; margin: 0 auto; padding: 0 24px; }
+  .survey-card {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 24px;
+    padding: 44px 40px;
+    box-shadow: 0 10px 40px rgba(26, 42, 71, 0.06);
+  }
+
+  .question-group {
+    margin-bottom: 40px;
+    padding-bottom: 36px;
+    border-bottom: 1px solid var(--line);
+  }
+  .question-group:last-of-type {
+    border-bottom: none; padding-bottom: 0; margin-bottom: 28px;
+  }
+  .group-title {
+    font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--mint-deep); font-weight: 600;
+    margin-bottom: 28px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .group-title::before {
+    content: ""; width: 24px; height: 1px; background: var(--mint-deep);
+  }
+
+  .field { margin-bottom: 24px; }
+  .field:last-child { margin-bottom: 0; }
+  .field > label.q {
+    display: block;
+    font-size: 15.5px; font-weight: 500; color: var(--ink);
+    margin-bottom: 12px;
+    line-height: 1.4;
+  }
+  .field .hint {
+    font-size: 13px; color: var(--muted); font-weight: 400;
+    margin-left: 6px; font-style: italic;
+  }
+
+  .options { display: flex; flex-wrap: wrap; gap: 8px; }
+  .option { position: relative; }
+  .option input {
+    position: absolute; opacity: 0; pointer-events: none;
+  }
+  .option label {
+    display: inline-block;
+    padding: 10px 16px;
+    border: 1.5px solid var(--line);
+    border-radius: 999px;
+    font-size: 14px; font-weight: 400;
+    cursor: pointer;
+    transition: all 0.15s;
+    margin: 0; color: var(--ink-2);
+    background: var(--white);
+    user-select: none;
+  }
+  .option label:hover { border-color: var(--mint-deep); }
+  .option input:checked + label {
+    background: var(--ink); color: var(--cream); border-color: var(--ink);
+  }
+
+  /* Scale */
+  .scale { display: flex; gap: 8px; align-items: center; }
+  .scale-option input { position: absolute; opacity: 0; pointer-events: none; }
+  .scale-option label {
+    display: flex; align-items: center; justify-content: center;
+    width: 52px; height: 52px;
+    border: 1.5px solid var(--line);
+    border-radius: 14px;
+    cursor: pointer; margin: 0;
+    font-size: 16px; font-weight: 500;
+    transition: all 0.15s;
+    color: var(--ink-2);
+    background: var(--white);
+    font-family: Georgia, serif;
+  }
+  .scale-option label:hover { border-color: var(--mint-deep); }
+  .scale-option input:checked + label {
+    background: var(--mint-deep); color: var(--white); border-color: var(--mint-deep);
+  }
+  .scale-labels {
+    display: flex; justify-content: space-between;
+    margin-top: 10px; font-size: 12px; color: var(--muted);
+    max-width: 300px;
+  }
+
+  input[type="text"], input[type="email"], textarea {
+    width: 100%;
+    padding: 13px 16px;
+    border: 1.5px solid var(--line);
+    border-radius: 12px;
+    font-size: 15px; font-family: inherit;
+    background: var(--white); color: var(--ink);
+    transition: border-color 0.15s;
+  }
+  input[type="text"]:focus, input[type="email"]:focus, textarea:focus {
+    outline: none; border-color: var(--mint-deep);
+  }
+  textarea { resize: vertical; min-height: 90px; }
+
+  /* Honeypot (hidden from humans, visible to bots) */
+  .hp {
+    position: absolute; left: -9999px; top: auto;
+    width: 1px; height: 1px; overflow: hidden;
+  }
+
+  .submit-wrap { text-align: center; margin-top: 40px; }
+  .submit-note {
+    font-size: 13px; color: var(--muted); margin-top: 16px;
+  }
+  .submit-error {
+    display: none;
+    margin-top: 18px;
+    padding: 12px 18px;
+    background: rgba(168, 75, 75, 0.08);
+    border: 1px solid rgba(168, 75, 75, 0.25);
+    border-radius: 10px;
+    color: var(--error);
+    font-size: 13.5px;
+    text-align: left;
+  }
+  .submit-error.show { display: block; }
+
+  /* Thank you */
+  .thank-you {
+    display: none; text-align: center; padding: 60px 24px;
+    max-width: 560px; margin: 0 auto;
+  }
+  .thank-you.show { display: block; animation: fadeInUp 0.6s ease-out; }
+  svg.big-mark { width: 110px; height: 110px; color: var(--ink); }
+  img.big-mark { width: auto; height: auto; max-width: 130px; max-height: 130px; object-fit: contain; }
+  .thank-you .logo-wrap { display: block; margin: 0 auto 28px; min-height: 110px; }
+  .thank-you h2 { font-size: clamp(30px, 4.5vw, 42px); margin-bottom: 16px; }
+  .thank-you p { font-size: 17px; color: var(--ink-2); }
+  .thank-you .sparkles-deco {
+    display: flex; justify-content: center; gap: 18px; margin-top: 32px;
+    color: var(--gold);
+  }
+  .thank-you .sparkles-deco svg { width: 20px; height: 20px; }
+
+  /* ---------- FOOTER ---------- */
+  footer {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 56px 24px 32px;
+    text-align: center;
+  }
+  footer .brand-name { color: var(--cream); justify-content: center; display: inline-flex; }
+  footer p { color: rgba(250, 245, 234, 0.65); font-size: 14px; margin-top: 14px; }
+  .founder-link {
+    display: inline-block; margin-top: 28px;
+    color: rgba(250, 245, 234, 0.35);
+    font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+    text-decoration: none; cursor: pointer;
+  }
+  .founder-link:hover { color: var(--mint); }
+
+  /* Modal */
+  .modal-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(26, 42, 71, 0.75);
+    backdrop-filter: blur(4px);
+    z-index: 200;
+    align-items: center; justify-content: center;
+    padding: 20px;
+  }
+  .modal-overlay.show { display: flex; }
+  .modal {
+    background: var(--cream);
+    border-radius: 20px;
+    padding: 32px;
+    max-width: 720px; width: 100%;
+    max-height: 85vh; overflow-y: auto;
+    position: relative;
+  }
+  .modal-close {
+    position: absolute; top: 14px; right: 16px;
+    background: none; border: none;
+    font-size: 28px; cursor: pointer; color: var(--muted);
+    line-height: 1;
+  }
+  .modal h3 { font-size: 24px; margin-bottom: 8px; }
+  .modal .count { font-size: 14px; color: var(--muted); margin-bottom: 20px; }
+  .response-row {
+    border-top: 1px solid var(--line);
+    padding: 14px 0;
+    font-size: 13px;
+  }
+  .response-row .meta {
+    font-family: Georgia, serif; font-size: 13px; color: var(--mint-deep);
+    margin-bottom: 6px;
+  }
+  .response-row pre {
+    white-space: pre-wrap; word-break: break-word;
+    font-size: 12px; color: var(--ink-2); font-family: ui-monospace, monospace;
+    background: var(--cream-2); padding: 10px; border-radius: 8px;
+  }
+  .modal-actions {
+    margin-top: 24px; display: flex; gap: 12px; justify-content: flex-end;
+    flex-wrap: wrap;
+  }
+
+  /* Animations */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.25; transform: scale(0.75) rotate(0deg); }
+    50% { opacity: 1; transform: scale(1.1) rotate(25deg); }
+  }
+
+  /* Mobile */
+  @media (max-width: 640px) {
+    .hero { padding: 48px 0 72px; }
+    .hero-logo-wrap { margin-bottom: 24px; min-height: 120px; }
+    img.hero-mark { max-width: 180px; max-height: 160px; }
+    svg.hero-mark { width: 120px; height: 120px; }
+    .section, .why, .survey-section { padding: 64px 0; }
+    .survey-card { padding: 30px 22px; border-radius: 18px; }
+    .nav { padding: 12px 18px; }
+    .nav-cta { padding: 7px 14px; font-size: 13px; }
+    .feature { padding: 24px 22px; }
+    .scale-option label { width: 46px; height: 46px; font-size: 15px; }
+    .why-quote { font-size: 19px; padding: 28px 12px 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Reusable SVG defs (fallback mark if logo images don't load) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="sparkle" viewBox="0 0 20 20">
+      <path d="M10 0 L11.4 8.6 L20 10 L11.4 11.4 L10 20 L8.6 11.4 L0 10 L8.6 8.6 Z" fill="currentColor"/>
+    </symbol>
+    <symbol id="chain-mark" viewBox="0 0 120 120">
+      <path d="M 28 22 C 14 22, 12 40, 18 48 C 24 56, 38 52, 42 48
+               M 48 56 C 60 56, 62 72, 58 80 C 54 88, 44 90, 40 86
+               M 68 80 C 82 80, 96 82, 100 96"
+            stroke="currentColor" stroke-width="7" fill="none"
+            stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="42" cy="52" r="12" fill="currentColor" opacity="0.06"/>
+      <circle cx="42" cy="52" r="12" fill="none" stroke="currentColor" stroke-width="2.5"/>
+      <circle cx="42" cy="52" r="2.5" fill="currentColor"/>
+      <circle cx="78" cy="82" r="12" fill="currentColor" opacity="0.06"/>
+      <circle cx="78" cy="82" r="12" fill="none" stroke="currentColor" stroke-width="2.5"/>
+      <circle cx="78" cy="82" r="2.5" fill="currentColor"/>
+    </symbol>
+  </defs>
+</svg>
+
+<header>
+  <div class="nav">
+    <a class="brand" href="#top">
+      <!-- Uses logo-mark.png (Image 1 – CS chain only). SVG below is fallback. -->
+      <img src="logo-mark.png" alt="Chain Spa" class="brand-mark"
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
+      <svg class="brand-mark" style="display:none"><use href="#chain-mark"/></svg>
+      <span class="brand-name">Chain Spa <span class="spark">✦</span></span>
+    </a>
+    <a href="#survey" class="nav-cta">Take the survey</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="hero-sparkles" aria-hidden="true">
+      <svg><use href="#sparkle"/></svg>
+      <svg><use href="#sparkle"/></svg>
+      <svg><use href="#sparkle"/></svg>
+      <svg><use href="#sparkle"/></svg>
+      <svg><use href="#sparkle"/></svg>
+    </div>
+    <div class="narrow">
+      <div class="hero-logo-wrap">
+        <!-- Uses logo-full.png (Image 5 – full CHAIN SPA wordmark). SVG below is fallback. -->
+        <img src="logo-full.png" alt="Chain Spa" class="hero-mark"
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
+        <svg class="hero-mark" style="display:none"><use href="#chain-mark"/></svg>
+      </div>
+      <h1>A spa day<br>for <em>your bike</em>.</h1>
+      <p class="hero-sub">Premium self-service bike wash stations, designed for the way people ride, commute, and live in cities.</p>
+      <div class="hero-cta">
+        <a href="#survey" class="btn">
+          Take the 2-minute survey
+          <span class="spk"><svg width="14" height="14"><use href="#sparkle"/></svg></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONCEPT ============ -->
+  <section class="section">
+    <div class="section-header">
+      <span class="eyebrow">The station</span>
+      <h2>Everything your bike needs,<br>in one stop.</h2>
+      <p class="section-lead">A compact, self-service wash cabin with the tools to take your bike from road-muddy to shop-fresh in under ten minutes.</p>
+    </div>
+    <div class="features">
+      <div class="feature">
+        <div class="feature-num">01</div>
+        <svg class="feature-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="16" cy="20" r="7"/>
+          <circle cx="30" cy="26" r="5"/>
+          <circle cx="20" cy="32" r="3.5"/>
+        </svg>
+        <h3>Degrease</h3>
+        <p>Spray-on degreaser cuts through road grime and drivetrain gunk in seconds.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-num">02</div>
+        <svg class="feature-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 22h8v8H8z"/>
+          <path d="M16 26l10-3v10z"/>
+          <path d="M28 26h4M34 20l3-2M34 26h4M34 32l3 2"/>
+          <path d="M42 22v8"/>
+        </svg>
+        <h3>Pressure wash</h3>
+        <p>Precision lance, car-wash style. Gentle enough for carbon, tough on dirt.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-num">03</div>
+        <svg class="feature-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 18h20a5 5 0 1 0-5-5"/>
+          <path d="M6 26h30a5 5 0 1 1-5 5"/>
+          <path d="M6 34h14"/>
+        </svg>
+        <h3>Air dry</h3>
+        <p>Compressed air blows water out of bearings, pivots, and hard-to-reach places.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-num">04</div>
+        <svg class="feature-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M24 8c-5 7-10 12-10 20a10 10 0 0 0 20 0c0-8-5-13-10-20z"/>
+          <path d="M20 28c0 3 2 5 4 5" stroke-opacity="0.5"/>
+        </svg>
+        <h3>Lube &amp; go</h3>
+        <p>A clean-chain dispenser finishes the job, so you can ride away fresh.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WHY ============ -->
+  <section class="why">
+    <div class="why-content">
+      <span class="eyebrow">Why Chain Spa</span>
+      <h2>Urban cyclists deserve better than a hose in the stairwell.</h2>
+      <p class="why-text">More people are commuting by bike, exploring on gravel, and investing in really nice rigs — but most apartments don't come with a garage, a yard, or a spot to properly wash them. Chain Spa brings proper care to where people actually ride: near transit hubs, workplaces, trailheads, and residential neighborhoods.</p>
+      <p class="why-quote">A clean drivetrain lasts twice as long. We want to make that easy.</p>
+    </div>
+  </section>
+
+  <!-- ============ SURVEY ============ -->
+  <section class="survey-section" id="survey">
+    <div class="survey-intro">
+      <span class="eyebrow">Help shape Chain Spa</span>
+      <h2>What would make this work for you?</h2>
+      <p class="section-lead">About 2 minutes. Your answers go straight to the founders ✦</p>
+    </div>
+
+    <form class="survey" id="survey-form" novalidate>
+      <div class="survey-card">
+
+        <!-- Honeypot for bots (hidden from users) -->
+        <div class="hp" aria-hidden="true">
+          <label>Leave this empty:
+            <input type="text" name="_website" tabindex="-1" autocomplete="off">
+          </label>
+        </div>
+
+        <!-- ========== GROUP 1 ========== -->
+        <div class="question-group">
+          <div class="group-title">Your rides</div>
+
+          <div class="field">
+            <label class="q">How often do you ride?</label>
+            <div class="options">
+              <div class="option"><input type="radio" name="ride_frequency" id="rf1" value="Daily"><label for="rf1">Daily</label></div>
+              <div class="option"><input type="radio" name="ride_frequency" id="rf2" value="A few times a week"><label for="rf2">A few times a week</label></div>
+              <div class="option"><input type="radio" name="ride_frequency" id="rf3" value="Weekly"><label for="rf3">Weekly</label></div>
+              <div class="option"><input type="radio" name="ride_frequency" id="rf4" value="A few times a month"><label for="rf4">A few times a month</label></div>
+              <div class="option"><input type="radio" name="ride_frequency" id="rf5" value="Rarely"><label for="rf5">Rarely</label></div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="q">What's your main reason for riding?</label>
+            <div class="options">
+              <div class="option"><input type="radio" name="primary_use" id="pu1" value="Commuting"><label for="pu1">Commuting</label></div>
+              <div class="option"><input type="radio" name="primary_use" id="pu2" value="Recreation"><label for="pu2">Recreation</label></div>
+              <div class="option"><input type="radio" name="primary_use" id="pu3" value="Both equally"><label for="pu3">Both equally</label></div>
+              <div class="option"><input type="radio" name="primary_use" id="pu4" value="Sport/racing"><label for="pu4">Sport / racing</label></div>
+              <div class="option"><input type="radio" name="primary_use" id="pu5" value="Delivery/work"><label for="pu5">Delivery / work</label></div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="q">What type of bike do you ride? <span class="hint">select all that apply</span></label>
+            <div class="options">
+              <div class="option"><input type="checkbox" name="bike_type" id="bt1" value="Road"><label for="bt1">Road</label></div>
+              <div class="option"><input type="checkbox" name="bike_type" id="bt2" value="Mountain"><label for="bt2">Mountain</label></div>
+              <div class="option"><input type="checkbox" name="bike_type" id="bt3" value="Gravel"><label for="bt3">Gravel</label></div>
+              <div class="option"><input type="checkbox" name="bike_type" id="bt4" value="Hybrid/commuter"><label for="bt4">Hybrid / commuter</label></div>
+              <div class="option"><input type="checkbox" name="bike_type" id="bt5" value="E-bike"><label for="bt5">E-bike</label></div>
+              <div class="option"><input type="checkbox" name="bike_type" id="bt6" value="Cargo"><label for="bt6">Cargo</label></div>
+              <div class="option"><input type="checkbox" name="bike_type" id="bt7" value="Folding"><label for="bt7">Folding</label></div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="q">Approximate value of your primary bike?</label>
+            <div class="options">
+              <div class="option"><input type="radio" name="bike_value" id="bv1" value="Under $500"><label for="bv1">Under $500</label></div>
+              <div class="option"><input type="radio" name="bike_value" id="bv2" value="$500–$1,500"><label for="bv2">$500 – $1,500</label></div>
+              <div class="option"><input type="radio" name="bike_value" id="bv3" value="$1,500–$3,000"><label for="bv3">$1,500 – $3,000</label></div>
+              <div class="option"><input type="radio" name="bike_value" id="bv4" value="$3,000–$5,000"><label for="bv4">$3,000 – $5,000</label></div>
+              <div class="option"><input type="radio" name="bike_value" id="bv5" value="$5,000+"><label for="bv5">$5,000+</label></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========== GROUP 2 ========== -->
+        <div class="question-group">
+          <div class="group-title">Cleaning, today</div>
+
+          <div class="field">
+            <label class="q">How often do you clean your bike?</label>
+            <div class="options">
+              <div class="option"><input type="radio" name="clean_frequency" id="cf1" value="After every ride"><label for="cf1">After every ride</label></div>
+              <div class="option"><input type="radio" name="clean_frequency" id="cf2" value="Weekly"><label for="cf2">Weekly</label></div>
+              <div class="option"><input type="radio" name="clean_frequency" id="cf3" value="Monthly"><label for="cf3">Monthly</label></div>
+              <div class="option"><input type="radio" name="clean_frequency" id="cf4" value="A few times a year"><label for="cf4">A few times a year</label></div>
+              <div class="option"><input type="radio" name="clean_frequency" id="cf5" value="Rarely / never"><label for="cf5">Rarely / never</label></div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="q">Where do you clean it now? <span class="hint">select all that apply</span></label>
+            <div class="options">
+              <div class="option"><input type="checkbox" name="clean_where" id="cw1" value="Home / yard hose"><label for="cw1">Home / yard hose</label></div>
+              <div class="option"><input type="checkbox" name="clean_where" id="cw2" value="Bathroom or shower"><label for="cw2">Bathroom or shower</label></div>
+              <div class="option"><input type="checkbox" name="clean_where" id="cw3" value="Basement / garage"><label for="cw3">Basement / garage</label></div>
+              <div class="option"><input type="checkbox" name="clean_where" id="cw4" value="Bike shop"><label for="cw4">Bike shop</label></div>
+              <div class="option"><input type="checkbox" name="clean_where" id="cw5" value="Car wash"><label for="cw5">Car wash</label></div>
+              <div class="option"><input type="checkbox" name="clean_where" id="cw6" value="I don't, really"><label for="cw6">I don't, really</label></div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="q">What's your biggest frustration with cleaning your bike? <span class="hint">optional</span></label>
+            <textarea name="biggest_frustration" placeholder="e.g. no space at home, takes too long, drivetrain is a pain, etc."></textarea>
+          </div>
+        </div>
+
+        <!-- ========== GROUP 3 ========== -->
+        <div class="question-group">
+          <div class="group-title">Chain Spa fit</div>
+
+          <div class="field">
+            <label class="q">How likely are you to use a service like Chain Spa?</label>
+            <div class="scale" role="radiogroup">
+              <div class="scale-option"><input type="radio" name="likelihood" id="lk1" value="1"><label for="lk1">1</label></div>
+              <div class="scale-option"><input type="radio" name="likelihood" id="lk2" value="2"><label for="lk2">2</label></div>
+              <div class="scale-option"><input type="radio" name="likelihood" id="lk3" value="3"><label for="lk3">3</label></div>
+              <div class="scale-option"><input type="radio" name="likelihood" id="lk4" value="4"><label for="lk4">4</label></div>
+              <div class="scale-option"><input type="radio" name="likelihood" id="lk5" value="5"><label for="lk5">5</label></div>
+            </div>
+            <div class="scale-labels">
+              <span>Not at all</span><span>Very likely</span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="q">If it were convenient, how often would you use it?</label>
+            <div class="options">
+              <div class="option"><input type="radio" name="use_frequency" id="uf1" value="Weekly or more"><label for="uf1">Weekly or more</label></div>
+              <div class="option"><input type="radio" name="use_frequency" id="uf2" value="Every 2 weeks"><label for="uf2">Every 2 weeks</label></div>
+              <div class="option"><input type="radio" name="use_frequency" id="uf3" value="Monthly"><label for="uf3">Monthly</label></div>
+              <div class="option"><input type="radio" name="use_frequency" id="uf4" value="A few times per season"><label for="uf4">A few times / season</label></div>
+              <div class="option"><input type="radio" name="use_frequency" id="uf5" value="Rarely"><label for="uf5">Rarely</label></div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="q">Fair price for a full wash session (degrease + wash + dry + lube)?</label>
+            <div class="options">
+              <div class="option"><input type="radio" name="fair_price" id="fp1" value="Under $5"><label for="fp1">Under $5</label></div>
+              <div class="option"><input type="radio" name="fair_price" id="fp2" value="$5–$10"><label for="fp2">$5 – $10</label></div>
+              <div class="option"><input type="radio" name="fair_price" id="fp3" value="$10–$15"><label for="fp3">$10 – $15</label></div>
+              <div class="option"><input type="radio" name="fair_price" id="fp4" value="$15–$20"><label for="fp4">$15 – $20</label></div>
+              <div class="option"><input type="radio" name="fair_price" id="fp5" value="$20+"><label for="fp5">$20+</label></div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="q">Which features matter most to you? <span class="hint">select all that apply</span></label>
+            <div class="options">
+              <div class="option"><input type="checkbox" name="important_features" id="if1" value="Degreaser"><label for="if1">Degreaser</label></div>
+              <div class="option"><input type="checkbox" name="important_features" id="if2" value="Pressure wash"><label for="if2">Pressure wash</label></div>
+              <div class="option"><input type="checkbox" name="important_features" id="if3" value="Air dry"><label for="if3">Air dry</label></div>
+              <div class="option"><input type="checkbox" name="important_features" id="if4" value="Chain lube dispenser"><label for="if4">Chain lube dispenser</label></div>
+              <div class="option"><input type="checkbox" name="important_features" id="if5" value="Bike lift / stand"><label for="if5">Bike lift / stand</label></div>
+              <div class="option"><input type="checkbox" name="important_features" id="if6" value="Contactless payment"><label for="if6">Contactless payment</label></div>
+              <div class="option"><input type="checkbox" name="important_features" id="if7" value="Indoor / covered shelter"><label for="if7">Indoor / covered</label></div>
+              <div class="option"><input type="checkbox" name="important_features" id="if8" value="24/7 availability"><label for="if8">24/7 availability</label></div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="q">Would a monthly membership interest you?</label>
+            <div class="options">
+              <div class="option"><input type="radio" name="membership_interest" id="mi1" value="Yes, ~$20/mo"><label for="mi1">Yes, ~$20/mo</label></div>
+              <div class="option"><input type="radio" name="membership_interest" id="mi2" value="Yes, ~$30/mo"><label for="mi2">Yes, ~$30/mo</label></div>
+              <div class="option"><input type="radio" name="membership_interest" id="mi3" value="Maybe"><label for="mi3">Maybe</label></div>
+              <div class="option"><input type="radio" name="membership_interest" id="mi4" value="No, I'd pay per use"><label for="mi4">No, pay-per-use</label></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========== GROUP 4 ========== -->
+        <div class="question-group">
+          <div class="group-title">Where &amp; how</div>
+
+          <div class="field">
+            <label class="q">Where should Chain Spa stations live? <span class="hint">select all that apply</span></label>
+            <div class="options">
+              <div class="option"><input type="checkbox" name="preferred_locations" id="pl1" value="Near home"><label for="pl1">Near my home</label></div>
+              <div class="option"><input type="checkbox" name="preferred_locations" id="pl2" value="Near workplace"><label for="pl2">Near my workplace</label></div>
+              <div class="option"><input type="checkbox" name="preferred_locations" id="pl3" value="Transit hubs"><label for="pl3">Transit hubs</label></div>
+              <div class="option"><input type="checkbox" name="preferred_locations" id="pl4" value="Trailheads"><label for="pl4">Trailheads</label></div>
+              <div class="option"><input type="checkbox" name="preferred_locations" id="pl5" value="Bike shops"><label for="pl5">Bike shops</label></div>
+              <div class="option"><input type="checkbox" name="preferred_locations" id="pl6" value="Parks / greenways"><label for="pl6">Parks / greenways</label></div>
+              <div class="option"><input type="checkbox" name="preferred_locations" id="pl7" value="Campuses"><label for="pl7">Campuses</label></div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="q">Anything else we should know? <span class="hint">optional</span></label>
+            <textarea name="additional_thoughts" placeholder="Feature ideas, concerns, or anything on your mind…"></textarea>
+          </div>
+
+          <div class="field">
+            <label class="q">Email, if you'd like early updates <span class="hint">optional</span></label>
+            <input type="email" name="email" placeholder="you@example.com">
+          </div>
+        </div>
+
+        <div class="submit-wrap">
+          <button type="submit" class="btn" id="submit-btn">
+            <span id="submit-btn-text">Submit survey</span>
+            <span class="spk"><svg width="14" height="14"><use href="#sparkle"/></svg></span>
+          </button>
+          <p class="submit-note">Thank you for helping us build something better.</p>
+          <div class="submit-error" id="submit-error">
+            Something went wrong submitting your response. Please try again, or email hello@chainspa.bike if it keeps happening.
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <div class="thank-you" id="thank-you">
+      <div class="logo-wrap">
+        <img src="logo-mark.png" alt="Chain Spa" class="big-mark"
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
+        <svg class="big-mark" style="display:none; color: var(--mint-deep);"><use href="#chain-mark"/></svg>
+      </div>
+      <h2>Thank you ✦</h2>
+      <p>Your answers help us design Chain Spa around riders like you. We'll be in touch when the first station opens — in the meantime, enjoy Bike to Work Day.</p>
+      <div class="sparkles-deco" aria-hidden="true">
+        <svg><use href="#sparkle"/></svg>
+        <svg><use href="#sparkle"/></svg>
+        <svg><use href="#sparkle"/></svg>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <span class="brand-name">Chain Spa <span class="spark">✦</span></span>
+  <p>Boston, MA &nbsp;·&nbsp; hello@chainspa.bike</p>
+  <a class="founder-link" id="founder-link">Founder view</a>
+</footer>
+
+<!-- ============ RESPONSE MODAL ============ -->
+<div class="modal-overlay" id="modal" role="dialog" aria-modal="true">
+  <div class="modal">
+    <button class="modal-close" id="modal-close" aria-label="Close">×</button>
+    <h3>Survey responses</h3>
+    <p class="count" id="response-count"></p>
+    <div id="response-list"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" id="clear-btn">Clear session</button>
+      <button class="btn" id="download-csv">Download CSV</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ====================================================================
+  // AIRTABLE CONFIG — fill in after creating your base (see setup notes)
+  // ====================================================================
+  // Leave blank during preview; responses will be kept in session only.
+  const AIRTABLE_CONFIG = {
+    baseId:    '',           // e.g. 'appXXXXXXXXXXXXXX'
+    tableName: 'Responses',  // must match your Airtable table name exactly
+    token:     ''            // PAT with data.records:write scoped to this base ONLY
+  };
+
+  // Session-only local store (also used as Founder-view backup)
+  const responses = [];
+
+  const form       = document.getElementById('survey-form');
+  const thankYou   = document.getElementById('thank-you');
+  const submitBtn  = document.getElementById('submit-btn');
+  const submitText = document.getElementById('submit-btn-text');
+  const submitErr  = document.getElementById('submit-error');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    // Honeypot — if a bot filled the hidden field, silently drop
+    const hp = form.querySelector('input[name="_website"]');
+    if (hp && hp.value) return;
+
+    const data = collectFormData(form);
+    data._timestamp = new Date().toISOString();
+
+    // UI: loading state
+    submitBtn.disabled = true;
+    submitText.textContent = 'Submitting…';
+    submitErr.classList.remove('show');
+
+    try {
+      if (AIRTABLE_CONFIG.baseId && AIRTABLE_CONFIG.token) {
+        await submitToAirtable(data);
+      }
+      responses.push(data); // keep locally too, for Founder view / CSV
+      form.style.display = 'none';
+      thankYou.classList.add('show');
+      thankYou.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } catch (err) {
+      console.error('Submission failed:', err);
+      responses.push(data); // still save locally as backup
+      submitBtn.disabled = false;
+      submitText.textContent = 'Submit survey';
+      submitErr.classList.add('show');
+    }
+  });
+
+  async function submitToAirtable(data) {
+    const url = `https://api.airtable.com/v0/${AIRTABLE_CONFIG.baseId}/${encodeURIComponent(AIRTABLE_CONFIG.tableName)}`;
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${AIRTABLE_CONFIG.token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        fields: mapToAirtableFields(data),
+        typecast: true
+      })
+    });
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(`Airtable ${res.status}: ${text}`);
+    }
+    return res.json();
+  }
+
+  // Maps our form field names to pretty Airtable column names.
+  // If you rename columns in Airtable, update the keys here to match.
+  function mapToAirtableFields(d) {
+    const f = {
+      'Timestamp':           d._timestamp,
+      'Ride Frequency':      d.ride_frequency,
+      'Primary Use':         d.primary_use,
+      'Bike Type':           d.bike_type,            // array -> multi-select
+      'Bike Value':          d.bike_value,
+      'Clean Frequency':     d.clean_frequency,
+      'Clean Where':         d.clean_where,          // array -> multi-select
+      'Biggest Frustration': d.biggest_frustration,
+      'Likelihood':          d.likelihood ? parseInt(d.likelihood, 10) : undefined,
+      'Use Frequency':       d.use_frequency,
+      'Fair Price':          d.fair_price,
+      'Important Features':  d.important_features,   // array -> multi-select
+      'Membership Interest': d.membership_interest,
+      'Preferred Locations': d.preferred_locations,  // array -> multi-select
+      'Additional Thoughts': d.additional_thoughts,
+      'Email':               d.email
+    };
+    Object.keys(f).forEach(k => (f[k] === undefined || f[k] === null) && delete f[k]);
+    return f;
+  }
+
+  function collectFormData(form) {
+    const data = {};
+    const inputs = form.querySelectorAll('input, textarea, select');
+    inputs.forEach(input => {
+      const name = input.name;
+      if (!name || name.startsWith('_')) return; // skip honeypot
+      if (input.type === 'checkbox') {
+        if (!Array.isArray(data[name])) data[name] = [];
+        if (input.checked) data[name].push(input.value);
+      } else if (input.type === 'radio') {
+        if (input.checked) data[name] = input.value;
+      } else {
+        const v = input.value.trim();
+        if (v) data[name] = v;
+      }
+    });
+    Object.keys(data).forEach(k => {
+      if (Array.isArray(data[k]) && data[k].length === 0) delete data[k];
+    });
+    return data;
+  }
+
+  // ---------- Founder view modal ----------
+  const founderLink  = document.getElementById('founder-link');
+  const modal        = document.getElementById('modal');
+  const modalClose   = document.getElementById('modal-close');
+  const responseList = document.getElementById('response-list');
+  const responseCount= document.getElementById('response-count');
+  const downloadBtn  = document.getElementById('download-csv');
+  const clearBtn     = document.getElementById('clear-btn');
+
+  founderLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    renderResponses();
+    modal.classList.add('show');
+  });
+  modalClose.addEventListener('click', () => modal.classList.remove('show'));
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) modal.classList.remove('show');
+  });
+
+  function renderResponses() {
+    responseCount.textContent = responses.length === 0
+      ? 'No responses collected in this session yet.'
+      : `${responses.length} response${responses.length === 1 ? '' : 's'} in this session.`;
+    responseList.innerHTML = responses.map((r, i) => {
+      const ts = new Date(r._timestamp);
+      const tsStr = ts.toLocaleString();
+      const copy = { ...r };
+      delete copy._timestamp;
+      return `
+        <div class="response-row">
+          <div class="meta">#${i + 1} · ${tsStr}</div>
+          <pre>${escapeHtml(JSON.stringify(copy, null, 2))}</pre>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function escapeHtml(s) {
+    return s.replace(/[&<>"']/g, c => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[c]));
+  }
+
+  clearBtn.addEventListener('click', () => {
+    if (responses.length === 0) return;
+    if (confirm('Clear all session responses? This cannot be undone.')) {
+      responses.length = 0;
+      renderResponses();
+    }
+  });
+
+  downloadBtn.addEventListener('click', () => {
+    if (responses.length === 0) return;
+    const allKeys = [...new Set(responses.flatMap(r => Object.keys(r)))];
+    const ordered = ['_timestamp', ...allKeys.filter(k => k !== '_timestamp')];
+    const csv = [
+      ordered.join(','),
+      ...responses.map(r => ordered.map(k => {
+        const v = r[k];
+        const str = Array.isArray(v) ? v.join('; ') : (v == null ? '' : String(v));
+        return `"${str.replace(/"/g, '""')}"`;
+      }).join(','))
+    ].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `chain-spa-survey-${new Date().toISOString().slice(0,10)}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+</script>
+
+</body>
+</html>
