@@ -827,12 +827,8 @@
   // ====================================================================
   // AIRTABLE CONFIG — fill in after creating your base (see setup notes)
   // ====================================================================
-  // Leave blank during preview; responses will be kept in session only.
-  const AIRTABLE_CONFIG = {
-    baseId:    '',           // e.g. 'appXXXXXXXXXXXXXX'
-    tableName: 'Responses',  // must match your Airtable table name exactly
-    token:     ''            // PAT with data.records:write scoped to this base ONLY
-  };
+  // Proxy URL — points to the Cloudflare Worker, not Airtable directly
+  const PROXY_URL = 'https://chainspa-survey.p-schwerd-kleine.workers.dev';
 
   // Session-only local store (also used as Founder-view backup)
   const responses = [];
@@ -859,7 +855,7 @@
     submitErr.classList.remove('show');
 
     try {
-      if (AIRTABLE_CONFIG.baseId && AIRTABLE_CONFIG.token) {
+      if (PROXY_URL) {
         await submitToAirtable(data);
       }
       responses.push(data); // keep locally too, for Founder view / CSV
@@ -876,21 +872,13 @@
   });
 
   async function submitToAirtable(data) {
-    const url = `https://api.airtable.com/v0/${AIRTABLE_CONFIG.baseId}/${encodeURIComponent(AIRTABLE_CONFIG.tableName)}`;
-    const res = await fetch(url, {
+    const res = await fetch(PROXY_URL, {
       method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${AIRTABLE_CONFIG.token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        fields: mapToAirtableFields(data),
-        typecast: true
-      })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
     });
     if (!res.ok) {
-      const text = await res.text();
-      throw new Error(`Airtable ${res.status}: ${text}`);
+      throw new Error(`Proxy ${res.status}`);
     }
     return res.json();
   }
