@@ -767,6 +767,11 @@
           </div>
 
           <div class="field">
+            <label class="q">Your name <span class="hint">optional</span></label>
+            <input type="text" name="name" placeholder="First name, or full name">
+          </div>
+
+          <div class="field">
             <label class="q">Email, if you'd like early updates <span class="hint">optional</span></label>
             <input type="email" name="email" placeholder="you@example.com">
           </div>
@@ -902,6 +907,7 @@
       'Membership Interest': d.membership_interest,
       'Preferred Locations': d.preferred_locations,  // array -> multi-select
       'Additional Thoughts': d.additional_thoughts,
+      'Name':                d.name,
       'Email':               d.email
     };
     Object.keys(f).forEach(k => (f[k] === undefined || f[k] === null) && delete f[k]);
