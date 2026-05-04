@@ -195,7 +195,7 @@
     letter-spacing: 0.1em;
     margin-bottom: 16px;
   }
-  .feature-icon { width: 44px; height: 44px; margin-bottom: 18px; color: var(--mint-deep); }
+  .feature-icon { width: 72px; height: 72px; margin-bottom: 18px; color: var(--mint-deep); object-fit: contain; }
   .feature h3 { font-size: 20px; margin-bottom: 8px; }
   .feature p { font-size: 14.5px; color: var(--muted); line-height: 1.55; }
 
@@ -509,7 +509,7 @@
       <p class="hero-sub">Premium self-service bike wash stations, designed for the way people ride, commute, and live in cities.</p>
       <div class="hero-cta">
         <a href="#survey" class="btn">
-          Take the 2-minute survey
+          Take the 2-minute survey - get a free chain clean
           <span class="spk"><svg width="14" height="14"><use href="#sparkle"/></svg></span>
         </a>
       </div>
@@ -526,41 +526,25 @@
     <div class="features">
       <div class="feature">
         <div class="feature-num">01</div>
-        <svg class="feature-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="16" cy="20" r="7"/>
-          <circle cx="30" cy="26" r="5"/>
-          <circle cx="20" cy="32" r="3.5"/>
-        </svg>
+        <img class="feature-icon" src="UI_logos/degreaser_logo.png" alt="" aria-hidden="true">
         <h3>Degrease</h3>
         <p>Spray-on degreaser cuts through road grime and drivetrain gunk in seconds.</p>
       </div>
       <div class="feature">
         <div class="feature-num">02</div>
-        <svg class="feature-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M8 22h8v8H8z"/>
-          <path d="M16 26l10-3v10z"/>
-          <path d="M28 26h4M34 20l3-2M34 26h4M34 32l3 2"/>
-          <path d="M42 22v8"/>
-        </svg>
+        <img class="feature-icon" src="UI_logos/Pressurewash_logo.png" alt="" aria-hidden="true">
         <h3>Pressure wash</h3>
         <p>Precision lance, car-wash style. Gentle enough for carbon, tough on dirt.</p>
       </div>
       <div class="feature">
         <div class="feature-num">03</div>
-        <svg class="feature-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M6 18h20a5 5 0 1 0-5-5"/>
-          <path d="M6 26h30a5 5 0 1 1-5 5"/>
-          <path d="M6 34h14"/>
-        </svg>
-        <h3>Air dry</h3>
+        <img class="feature-icon" src="UI_logos/blow_dry_logo.png" alt="" aria-hidden="true">
+        <h3>Blow dry</h3>
         <p>Compressed air blows water out of bearings, pivots, and hard-to-reach places.</p>
       </div>
       <div class="feature">
         <div class="feature-num">04</div>
-        <svg class="feature-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M24 8c-5 7-10 12-10 20a10 10 0 0 0 20 0c0-8-5-13-10-20z"/>
-          <path d="M20 28c0 3 2 5 4 5" stroke-opacity="0.5"/>
-        </svg>
+        <img class="feature-icon" src="UI_logos/lube_logo.png" alt="" aria-hidden="true">
         <h3>Lube &amp; go</h3>
         <p>A clean-chain dispenser finishes the job, so you can ride away fresh.</p>
       </div>
@@ -572,7 +556,7 @@
     <div class="why-content">
       <span class="eyebrow">Why Chain Spa</span>
       <h2>Urban cyclists deserve a clean drivetrain.</h2>
-      <p class="why-text">More people are commuting by bike, exploring on gravel, and investing in really nice rigs — but most apartments don't come with a garage, a yard, or a spot to properly wash them. Chain Spa brings proper care to where people actually ride: near transit hubs, workplaces, trailheads, and residential neighborhoods.</p>
+      <p class="why-text">More people are commuting by bike, riding gravel, and buying really nice bikes — but most city apartments don't come with a garage, a yard, or a hose. Chain Spa brings proper care where people ride: transit hubs, workplaces, trailheads, neighborhoods.</p>
       <p class="why-quote">A clean drivetrain lasts twice as long. We want to make that easy.</p>
     </div>
   </section>
@@ -582,7 +566,7 @@
     <div class="survey-intro">
       <span class="eyebrow">Help shape Chain Spa</span>
       <h2>What would make this work for you?</h2>
-      <p class="section-lead">About 2 minutes. Your answers go straight to the founders ✦</p>
+      <p class="section-lead">About 2 minutes. Your answers go straight to the founders — and at Bike to Work Day, your chain clean is on us ✦</p>
     </div>
 
     <form class="survey" id="survey-form" novalidate>
@@ -607,30 +591,6 @@
               <div class="option"><input type="radio" name="ride_frequency" id="rf3" value="Weekly"><label for="rf3">Weekly</label></div>
               <div class="option"><input type="radio" name="ride_frequency" id="rf4" value="A few times a month"><label for="rf4">A few times a month</label></div>
               <div class="option"><input type="radio" name="ride_frequency" id="rf5" value="Rarely"><label for="rf5">Rarely</label></div>
-            </div>
-          </div>
-
-          <div class="field">
-            <label class="q">What's your main reason for riding?</label>
-            <div class="options">
-              <div class="option"><input type="radio" name="primary_use" id="pu1" value="Commuting"><label for="pu1">Commuting</label></div>
-              <div class="option"><input type="radio" name="primary_use" id="pu2" value="Recreation"><label for="pu2">Recreation</label></div>
-              <div class="option"><input type="radio" name="primary_use" id="pu3" value="Both equally"><label for="pu3">Both equally</label></div>
-              <div class="option"><input type="radio" name="primary_use" id="pu4" value="Sport/racing"><label for="pu4">Sport / racing</label></div>
-              <div class="option"><input type="radio" name="primary_use" id="pu5" value="Delivery/work"><label for="pu5">Delivery / work</label></div>
-            </div>
-          </div>
-
-          <div class="field">
-            <label class="q">What type of bike do you ride? <span class="hint">select all that apply</span></label>
-            <div class="options">
-              <div class="option"><input type="checkbox" name="bike_type" id="bt1" value="Road"><label for="bt1">Road</label></div>
-              <div class="option"><input type="checkbox" name="bike_type" id="bt2" value="Mountain"><label for="bt2">Mountain</label></div>
-              <div class="option"><input type="checkbox" name="bike_type" id="bt3" value="Gravel"><label for="bt3">Gravel</label></div>
-              <div class="option"><input type="checkbox" name="bike_type" id="bt4" value="Hybrid/commuter"><label for="bt4">Hybrid / commuter</label></div>
-              <div class="option"><input type="checkbox" name="bike_type" id="bt5" value="E-bike"><label for="bt5">E-bike</label></div>
-              <div class="option"><input type="checkbox" name="bike_type" id="bt6" value="Cargo"><label for="bt6">Cargo</label></div>
-              <div class="option"><input type="checkbox" name="bike_type" id="bt7" value="Folding"><label for="bt7">Folding</label></div>
             </div>
           </div>
 
@@ -684,20 +644,6 @@
           <div class="group-title">Chain Spa fit</div>
 
           <div class="field">
-            <label class="q">How likely are you to use a service like Chain Spa?</label>
-            <div class="scale" role="radiogroup">
-              <div class="scale-option"><input type="radio" name="likelihood" id="lk1" value="1"><label for="lk1">1</label></div>
-              <div class="scale-option"><input type="radio" name="likelihood" id="lk2" value="2"><label for="lk2">2</label></div>
-              <div class="scale-option"><input type="radio" name="likelihood" id="lk3" value="3"><label for="lk3">3</label></div>
-              <div class="scale-option"><input type="radio" name="likelihood" id="lk4" value="4"><label for="lk4">4</label></div>
-              <div class="scale-option"><input type="radio" name="likelihood" id="lk5" value="5"><label for="lk5">5</label></div>
-            </div>
-            <div class="scale-labels">
-              <span>Not at all</span><span>Very likely</span>
-            </div>
-          </div>
-
-          <div class="field">
             <label class="q">If it were convenient, how often would you use it?</label>
             <div class="options">
               <div class="option"><input type="radio" name="use_frequency" id="uf1" value="Weekly or more"><label for="uf1">Weekly or more</label></div>
@@ -726,10 +672,6 @@
               <div class="option"><input type="checkbox" name="important_features" id="if2" value="Pressure wash"><label for="if2">Pressure wash</label></div>
               <div class="option"><input type="checkbox" name="important_features" id="if3" value="Air dry"><label for="if3">Air dry</label></div>
               <div class="option"><input type="checkbox" name="important_features" id="if4" value="Chain lube dispenser"><label for="if4">Chain lube dispenser</label></div>
-              <div class="option"><input type="checkbox" name="important_features" id="if5" value="Bike lift / stand"><label for="if5">Bike lift / stand</label></div>
-              <div class="option"><input type="checkbox" name="important_features" id="if6" value="Contactless payment"><label for="if6">Contactless payment</label></div>
-              <div class="option"><input type="checkbox" name="important_features" id="if7" value="Indoor / covered shelter"><label for="if7">Indoor / covered</label></div>
-              <div class="option"><input type="checkbox" name="important_features" id="if8" value="24/7 availability"><label for="if8">24/7 availability</label></div>
             </div>
           </div>
 
@@ -759,16 +701,6 @@
               <div class="option"><input type="checkbox" name="preferred_locations" id="pl6" value="Parks / greenways"><label for="pl6">Parks / greenways</label></div>
               <div class="option"><input type="checkbox" name="preferred_locations" id="pl7" value="Campuses"><label for="pl7">Campuses</label></div>
             </div>
-          </div>
-
-          <div class="field">
-            <label class="q">Anything else we should know? <span class="hint">optional</span></label>
-            <textarea name="additional_thoughts" placeholder="Feature ideas, concerns, or anything on your mind…"></textarea>
-          </div>
-
-          <div class="field">
-            <label class="q">Your name <span class="hint">optional</span></label>
-            <input type="text" name="name" placeholder="First name, or full name">
           </div>
 
           <div class="field">
@@ -894,20 +826,15 @@
     const f = {
       'Timestamp':           d._timestamp,
       'Ride Frequency':      d.ride_frequency,
-      'Primary Use':         d.primary_use,
-      'Bike Type':           d.bike_type,            // array -> multi-select
       'Bike Value':          d.bike_value,
       'Clean Frequency':     d.clean_frequency,
       'Clean Where':         d.clean_where,          // array -> multi-select
       'Biggest Frustration': d.biggest_frustration,
-      'Likelihood':          d.likelihood ? parseInt(d.likelihood, 10) : undefined,
       'Use Frequency':       d.use_frequency,
       'Fair Price':          d.fair_price,
       'Important Features':  d.important_features,   // array -> multi-select
       'Membership Interest': d.membership_interest,
       'Preferred Locations': d.preferred_locations,  // array -> multi-select
-      'Additional Thoughts': d.additional_thoughts,
-      'Name':                d.name,
       'Email':               d.email
     };
     Object.keys(f).forEach(k => (f[k] === undefined || f[k] === null) && delete f[k]);
