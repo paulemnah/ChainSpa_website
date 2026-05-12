@@ -509,7 +509,7 @@
       <p class="hero-sub">Premium self-service bike wash stations, designed for the way people ride, commute, and live in cities.</p>
       <div class="hero-cta">
         <a href="#survey" class="btn">
-          Take the 2-minute survey - get a free chain clean
+          Take the 2-minute survey
           <span class="spk"><svg width="14" height="14"><use href="#sparkle"/></svg></span>
         </a>
       </div>
@@ -566,7 +566,7 @@
     <div class="survey-intro">
       <span class="eyebrow">Help shape Chain Spa</span>
       <h2>What would make this work for you?</h2>
-      <p class="section-lead">About 2 minutes. Your answers go straight to the founders — and at Bike to Work Day, your chain clean is on us ✦</p>
+      <p class="section-lead">About 2 minutes. Your answers go straight to the founders ✦</p>
     </div>
 
     <form class="survey" id="survey-form" novalidate>
@@ -582,6 +582,35 @@
         <!-- ========== GROUP 1 ========== -->
         <div class="question-group">
           <div class="group-title">Your rides</div>
+
+          <div class="field">
+            <label class="q">Your name <span class="hint">optional</span></label>
+            <input type="text" name="name" placeholder="First name is fine">
+          </div>
+
+          <div class="field">
+            <label class="q">What kind of bike do you ride most?</label>
+            <div class="options">
+              <div class="option"><input type="radio" name="bike_type" id="bt1" value="Road"><label for="bt1">Road</label></div>
+              <div class="option"><input type="radio" name="bike_type" id="bt2" value="Gravel"><label for="bt2">Gravel</label></div>
+              <div class="option"><input type="radio" name="bike_type" id="bt3" value="Mountain"><label for="bt3">Mountain</label></div>
+              <div class="option"><input type="radio" name="bike_type" id="bt4" value="Commuter / hybrid"><label for="bt4">Commuter / hybrid</label></div>
+              <div class="option"><input type="radio" name="bike_type" id="bt5" value="E-bike"><label for="bt5">E-bike</label></div>
+              <div class="option"><input type="radio" name="bike_type" id="bt6" value="Other"><label for="bt6">Other</label></div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="q">What do you mostly use it for? <span class="hint">select all that apply</span></label>
+            <div class="options">
+              <div class="option"><input type="checkbox" name="primary_use" id="pu1" value="Commuting"><label for="pu1">Commuting</label></div>
+              <div class="option"><input type="checkbox" name="primary_use" id="pu2" value="Recreation"><label for="pu2">Recreation</label></div>
+              <div class="option"><input type="checkbox" name="primary_use" id="pu3" value="Fitness / training"><label for="pu3">Fitness / training</label></div>
+              <div class="option"><input type="checkbox" name="primary_use" id="pu4" value="Racing"><label for="pu4">Racing</label></div>
+              <div class="option"><input type="checkbox" name="primary_use" id="pu5" value="Errands"><label for="pu5">Errands</label></div>
+              <div class="option"><input type="checkbox" name="primary_use" id="pu6" value="Touring / bikepacking"><label for="pu6">Touring / bikepacking</label></div>
+            </div>
+          </div>
 
           <div class="field">
             <label class="q">How often do you ride?</label>
@@ -642,6 +671,18 @@
         <!-- ========== GROUP 3 ========== -->
         <div class="question-group">
           <div class="group-title">Chain Spa fit</div>
+
+          <div class="field">
+            <label class="q">How likely are you to use Chain Spa when it opens?</label>
+            <div class="scale">
+              <div class="scale-option"><input type="radio" name="likelihood" id="lk1" value="1"><label for="lk1">1</label></div>
+              <div class="scale-option"><input type="radio" name="likelihood" id="lk2" value="2"><label for="lk2">2</label></div>
+              <div class="scale-option"><input type="radio" name="likelihood" id="lk3" value="3"><label for="lk3">3</label></div>
+              <div class="scale-option"><input type="radio" name="likelihood" id="lk4" value="4"><label for="lk4">4</label></div>
+              <div class="scale-option"><input type="radio" name="likelihood" id="lk5" value="5"><label for="lk5">5</label></div>
+            </div>
+            <div class="scale-labels"><span>Not likely</span><span>Very likely</span></div>
+          </div>
 
           <div class="field">
             <label class="q">If it were convenient, how often would you use it?</label>
@@ -729,7 +770,7 @@
         <svg class="big-mark" style="display:none; color: var(--mint-deep);"><use href="#chain-mark"/></svg>
       </div>
       <h2>Thank you ✦</h2>
-      <p> Please show this screen to redeem your free chain clean. Your answers help us design Chain Spa around riders like you.</p>
+      <p>Your answers help us design Chain Spa around riders like you.</p>
       <div class="sparkles-deco" aria-hidden="true">
         <svg><use href="#sparkle"/></svg>
         <svg><use href="#sparkle"/></svg>
@@ -825,11 +866,15 @@
   function mapToAirtableFields(d) {
     const f = {
       'Timestamp':           d._timestamp,
+      'Name':                d.name,
       'Ride Frequency':      d.ride_frequency,
+      'Primary Use':         d.primary_use,          // array -> multi-select
+      'Bike Type':           d.bike_type,
       'Bike Value':          d.bike_value,
       'Clean Frequency':     d.clean_frequency,
       'Clean Where':         d.clean_where,          // array -> multi-select
       'Biggest Frustration': d.biggest_frustration,
+      'Likelihood':          d.likelihood,
       'Use Frequency':       d.use_frequency,
       'Fair Price':          d.fair_price,
       'Important Features':  d.important_features,   // array -> multi-select
